@@ -8,7 +8,7 @@
     <title>Api usage/dev guide - LoxiLB Documentations</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
@@ -17,19 +17,18 @@
         var mkdocs_page_url = "/loxilbdocs/api/";
       </script>
     
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-21G7NBL2BN"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-21G7NBL2BN');
+        gtag('config', "G-21G7NBL2BN");
       </script>
 </head>
 
@@ -92,7 +91,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Api usage/dev guide</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Api usage/dev guide</a>
     <ul class="current">
     </ul>
                 </li>
@@ -126,8 +125,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Api usage/dev guide</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Api usage/dev guide</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -139,23 +138,25 @@
                 <h1 id="api-server">API server</h1>
 <p>Generic library for building a LoxiLB API server.</p>
 <h1 id="usage">Usage</h1>
-<p>현재 API 서버는 HTTP, HTTPS모두 지원하며, Loxilb 실행시 -a 혹은 --api 옵션을 추가해서 실행이 가능하다.
-API에 사용되는 옵션은 다음과 같다. 보안을 위해 HTTPS 옵션 --tls-key, --tls-certificate를 모두 주어야만 실행이 가능하다.</p>
-<p>Currently, the API server supports both HTTP and HTTPS, and can be run by adding -a or --api options when running Loxilb. The options used in the API are as follows. For security purposes, HTTPS options --tls-key, --tls-certificate must be given to run.</p>
+<p>현재 API 서버는 HTTP, HTTPS모두 지원하며, Loxilb 실행시 Default로 실행됩니다.</p>
+<p>API에 사용되는 옵션은 다음과 같습니다. HTTPS에 대한 실행은 후술될 내용을 참조하시길 바랍니다.</p>
+<p>The current API server supports both HTTP and HTTPS. It runs as default when running Loxilb.
+The options used in the API are as follows. For running HTTPS, please refer to the following sections.</p>
 <pre><code>      --host=            the IP to listen on (default: localhost) [$HOST]
       --port=            the port to listen on for insecure connections, defaults to a random value [$PORT]
+      --tls              enable TLS  [$TLS]
       --tls-host=        the IP to listen on for tls, when not specified it's the same as --host [$TLS_HOST]
       --tls-port=        the port to listen on for secure connections, defaults to a random value [$TLS_PORT]
       --tls-certificate= the certificate to use for secure connections [$TLS_CERTIFICATE]
       --tls-key=         the private key to use for secure connections [$TLS_PRIVATE_KEY]
 </code></pre>
-<p>실제 사용하는 예시는 다음과 같다.</p>
+<p>실제 사용하는 예시는 다음과 같습니다.</p>
 <p>Examples of practical use are as follows.</p>
-<pre><code> ./loxilb --tls-key=api/certification/server.key --tls-certificate=api/certification/server.crt --host=0.0.0.0 --port=8081 --tls-port=8091 -a
+<pre><code> ./loxilb --tls-key=api/certification/server.key --tls-certificate=api/certification/server.crt --host=0.0.0.0 --port=11111 --tls-port=8091
 </code></pre>
 <h1 id="api-list">API list</h1>
-<p>현재 API는 Load balancer 에 대한 Create, Delete, Read API가 있다.
-Currently, the API has Create, Delete, and Read APIs for Load balancer.</p>
+<p>예시로 보여드릴 API는 Load balancer 에 대한 Create, Delete, Read API가 있습니다.</p>
+<p>For example, the API has Create, Delete, and Read APIs for Load balancer.</p>
 <table>
 <thead>
 <tr>
@@ -182,8 +183,89 @@ Currently, the API has Create, Delete, and Read APIs for Load balancer.</p>
 </tr>
 </tbody>
 </table>
-<p>더 자세한 정보( Param, Body 등)은 Swagger문서를 참조한다.</p>
+<p>더 자세한 정보(Param, Body 등)은 Swagger문서를 참조 하시길 바랍니다.</p>
 <p>See Swagger documentation for more information (Param, Body, etc.).</p>
+<h1 id="https-guide">HTTPS guide</h1>
+<p>Key and Cert files are required for HTTPS, and they are not detailed, but explain how to generate them and where LoxiLB can read and use user-generated Key and Cert files.</p>
+<pre><code>      --tls              enable TLS  [$TLS]
+      --tls-host=        the IP to listen on for tls, when not specified it's the same as --host [$TLS_HOST]
+      --tls-port=        the port to listen on for secure connections (default: 8091) [$TLS_PORT]
+      --tls-certificate= the certificate to use for secure connections (default:
+                         /opt/loxilb/cert/server.crt) [$TLS_CERTIFICATE]
+      --tls-key=         the private key to use for secure connections (default:
+                         /opt/loxilb/cert/server.key) [$TLS_PRIVATE_KEY]
+</code></pre>
+<p>To enable https on LoxiLB, we changed it to enable it using the  <code>--tls</code>option. </p>
+<p>Tls-host and tls-port are the contents of deciding which IP to listen to. The default IP address used as tls-host is 0.0.0.0, which is everywhere, but for future security, we recommend doing only certain values. The port is 8091 as the default. You can also find and change this from a value that does not overlap with the service you use.</p>
+<p>LoxiLB reads the key by default as /opt/loxilb/cert/path with server.key and the Cert file as server.crt in the same path. In this article, we will learn how to create the server.key and server.crt files.</p>
+<h2 id="preparation">Preparation</h2>
+<p>First of all, the simplest way is to create it using <em>openssl</em>. To install openssl, you can install it using the command below.</p>
+<pre><code>apt install openssl
+</code></pre>
+<p>The LoxiLB team confirmed that it operates on 1.1.1f version of openssl.</p>
+<pre><code>openssl version
+OpenSSL 1.1.1f  31 Mar 2020
+</code></pre>
+<h3 id="1-create-serverkey">1. Create server.key</h3>
+<pre><code class="language-bash">openssl genrsa -out server.key 2048
+</code></pre>
+<p>The way to generate server.key is simple. You can create a new key by typing the command above. In fact, if you type in the command, you can see that the process is output and the server.key is generated.</p>
+<pre><code class="language-bash">openssl genrsa -out server.key 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+..............................................+++++
+...........................................+++++
+e is 65537 (0x010001)
+</code></pre>
+<h3 id="2-create-servercsr">2. Create server.csr</h3>
+<pre><code class="language-bash">openssl req -new -key server.key -out server.csr
+</code></pre>
+<p>Create a csr file by putting the desired value in the corresponding item. This file is not used directly for https, but it is necessary to create a Cert file to be created later. When you type in the command above, a long sentence appears asking you to enter information, and you can fill in the corresponding value according to your situation.</p>
+<pre><code class="language-bash">openssl req -new -key server.key -out server.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+</code></pre>
+<h3 id="3-create-servercrt">3. Create server.crt</h3>
+<pre><code class="language-bash">openssl x509 -req -days 365 -in server.csr -signkey server.key  -out server.crt
+</code></pre>
+<p>This is the process of creating server.crt using server.key and server.csr generated above. You can issue a certificate with a limited deadline by setting the expiration date of the certificate well and putting a value after -day. The server.crt file is created with the following output.</p>
+<pre><code class="language-bash">openssl x509 -req -days 365 -in server.csr -signkey server.key  -out server.crt
+Signature ok
+subject=C = AU, ST = Some-State, O = Internet Widgits Pty Ltd
+Getting Private key
+</code></pre>
+<h3 id="4-validation">4. Validation</h3>
+<p>You can enable https with the server.key and server.cert files generated through the above process.</p>
+<p>If you move all of these files to the <code>/opt/loxilb</code> path and check them, you can see that they work well.</p>
+<pre><code class="language-bash">sudo cp server.key /opt/loxilb/cert/.
+sudo cp server.crt /opt/loxilb/cert/.
+</code></pre>
+<pre><code class="language-bash"> curl http://0.0.0.0:11111/netlox/v1/config/loadbalancer/all
+{&quot;lbAttr&quot;:[]}
+
+ curl -k https://0.0.0.0:8091/netlox/v1/config/loadbalancer/all
+{&quot;lbAttr&quot;:[]}
+</code></pre>
+<p>It should appear in the log as follows.</p>
+<pre><code class="language-bash">2024/04/12 16:19:48 Serving loxilb rest API at http://[::]:11111
+2024/04/12 16:19:48 Serving loxilb rest API at https://[::]:8091
+</code></pre>
 <h1 id="loxilb-api-development-guide">LoxiLB API development guide</h1>
 <h2 id="api-source-architecture">API source Architecture</h2>
 <pre><code>.
@@ -341,13 +423,14 @@ func ConfigAdditionalUrl(params operations.GetAdditionalUrlParams) middleware.Re
     
   </span>
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-    <script defer>
-        window.onload = function () {
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
-        };
+        });
     </script>
 
 </body>
