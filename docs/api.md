@@ -2,31 +2,35 @@
 Generic library for building a LoxiLB API server.
 
 # Usage
-현재 API 서버는 HTTP, HTTPS모두 지원하며, Loxilb 실행시 -a 혹은 --api 옵션을 추가해서 실행이 가능하다.
-API에 사용되는 옵션은 다음과 같다. 보안을 위해 HTTPS 옵션 --tls-key, --tls-certificate를 모두 주어야만 실행이 가능하다.
+현재 API 서버는 HTTP, HTTPS모두 지원하며, Loxilb 실행시 Default로 실행됩니다.
 
-Currently, the API server supports both HTTP and HTTPS, and can be run by adding -a or --api options when running Loxilb. The options used in the API are as follows. For security purposes, HTTPS options --tls-key, --tls-certificate must be given to run.
+API에 사용되는 옵션은 다음과 같습니다. HTTPS에 대한 실행은 후술될 내용을 참조하시길 바랍니다.
+
+The current API server supports both HTTP and HTTPS. It runs as default when running Loxilb.
+The options used in the API are as follows. For running HTTPS, please refer to the following sections.
 
 ```
       --host=            the IP to listen on (default: localhost) [$HOST]
       --port=            the port to listen on for insecure connections, defaults to a random value [$PORT]
+      --tls              enable TLS  [$TLS]
       --tls-host=        the IP to listen on for tls, when not specified it's the same as --host [$TLS_HOST]
       --tls-port=        the port to listen on for secure connections, defaults to a random value [$TLS_PORT]
       --tls-certificate= the certificate to use for secure connections [$TLS_CERTIFICATE]
       --tls-key=         the private key to use for secure connections [$TLS_PRIVATE_KEY]
 ```
 
-실제 사용하는 예시는 다음과 같다.
+실제 사용하는 예시는 다음과 같습니다.
 
 Examples of practical use are as follows.
 
 ```
- ./loxilb --tls-key=api/certification/server.key --tls-certificate=api/certification/server.crt --host=0.0.0.0 --port=8081 --tls-port=8091 -a
+ ./loxilb --tls-key=api/certification/server.key --tls-certificate=api/certification/server.crt --host=0.0.0.0 --port=11111 --tls-port=8091
 ```
 
 # API list
-현재 API는 Load balancer 에 대한 Create, Delete, Read API가 있다.
-Currently, the API has Create, Delete, and Read APIs for Load balancer.
+예시로 보여드릴 API는 Load balancer 에 대한 Create, Delete, Read API가 있습니다.
+
+For example, the API has Create, Delete, and Read APIs for Load balancer.
 
 | Method | URL | Role | 
 |------|---|---|
@@ -34,9 +38,119 @@ Currently, the API has Create, Delete, and Read APIs for Load balancer.
 | POST|/netlox/v1/config/loadbalancer| Add the load balancer information to LoxiLB |
 | DELETE|/netlox/v1/config/loadbalancer/externalipaddress/{IPaddress}/port/{#Port}/protocol/{protocol} | Delete the load balacer infomation from LoxiLB|
 
-더 자세한 정보( Param, Body 등)은 Swagger문서를 참조한다.
+더 자세한 정보(Param, Body 등)은 Swagger문서를 참조 하시길 바랍니다.
 
 See Swagger documentation for more information (Param, Body, etc.).
+
+# HTTPS guide
+ Key and Cert files are required for HTTPS, and they are not detailed, but explain how to generate them and where LoxiLB can read and use user-generated Key and Cert files.
+
+```
+      --tls              enable TLS  [$TLS]
+      --tls-host=        the IP to listen on for tls, when not specified it's the same as --host [$TLS_HOST]
+      --tls-port=        the port to listen on for secure connections (default: 8091) [$TLS_PORT]
+      --tls-certificate= the certificate to use for secure connections (default:
+                         /opt/loxilb/cert/server.crt) [$TLS_CERTIFICATE]
+      --tls-key=         the private key to use for secure connections (default:
+                         /opt/loxilb/cert/server.key) [$TLS_PRIVATE_KEY]
+```
+To enable https on LoxiLB, we changed it to enable it using the  `--tls`option. 
+
+Tls-host and tls-port are the contents of deciding which IP to listen to. The default IP address used as tls-host is 0.0.0.0, which is everywhere, but for future security, we recommend doing only certain values. The port is 8091 as the default. You can also find and change this from a value that does not overlap with the service you use.
+
+LoxiLB reads the key by default as /opt/loxilb/cert/path with server.key and the Cert file as server.crt in the same path. In this article, we will learn how to create the server.key and server.crt files.
+
+## Preparation
+First of all, the simplest way is to create it using *openssl*. To install openssl, you can install it using the command below.
+```
+apt install openssl
+```
+The LoxiLB team confirmed that it operates on 1.1.1f version of openssl.
+```
+openssl version
+OpenSSL 1.1.1f  31 Mar 2020
+```
+### 1. Create server.key 
+
+```bash
+openssl genrsa -out server.key 2048
+```
+
+The way to generate server.key is simple. You can create a new key by typing the command above. In fact, if you type in the command, you can see that the process is output and the server.key is generated.
+```bash
+openssl genrsa -out server.key 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+..............................................+++++
+...........................................+++++
+e is 65537 (0x010001)
+```
+
+### 2. Create server.csr 
+
+```bash
+openssl req -new -key server.key -out server.csr
+```
+
+Create a csr file by putting the desired value in the corresponding item. This file is not used directly for https, but it is necessary to create a Cert file to be created later. When you type in the command above, a long sentence appears asking you to enter information, and you can fill in the corresponding value according to your situation.
+```bash
+openssl req -new -key server.key -out server.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+```
+
+### 3. Create server.crt
+```bash
+openssl x509 -req -days 365 -in server.csr -signkey server.key  -out server.crt
+```
+This is the process of creating server.crt using server.key and server.csr generated above. You can issue a certificate with a limited deadline by setting the expiration date of the certificate well and putting a value after -day. The server.crt file is created with the following output.
+```bash
+openssl x509 -req -days 365 -in server.csr -signkey server.key  -out server.crt
+Signature ok
+subject=C = AU, ST = Some-State, O = Internet Widgits Pty Ltd
+Getting Private key
+```
+
+### 4. Validation
+You can enable https with the server.key and server.cert files generated through the above process.
+
+If you move all of these files to the `/opt/loxilb` path and check them, you can see that they work well.
+
+```bash
+sudo cp server.key /opt/loxilb/cert/.
+sudo cp server.crt /opt/loxilb/cert/.
+```
+
+```bash
+ curl http://0.0.0.0:11111/netlox/v1/config/loadbalancer/all
+{"lbAttr":[]}
+
+ curl -k https://0.0.0.0:8091/netlox/v1/config/loadbalancer/all
+{"lbAttr":[]}
+```
+
+It should appear in the log as follows.
+
+```bash
+2024/04/12 16:19:48 Serving loxilb rest API at http://[::]:11111
+2024/04/12 16:19:48 Serving loxilb rest API at https://[::]:8091
+```
 
 # LoxiLB API development guide
 ## API source Architecture
