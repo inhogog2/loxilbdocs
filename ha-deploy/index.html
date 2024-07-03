@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://loxilb-io.github.io/loxilbdocs/ha-deploy/">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Understanding High-availability with loxilb - loxilb v0.9.4</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../stylesheets/extra.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-21G7NBL2BN"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', "G-21G7NBL2BN");
+        </script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">loxilb v0.9.4</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Architectural Considerations</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../kube-loxilb/" class="dropdown-item">Understanding loxilb deployment in K8s with kube-loxilb</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Understanding High-availability with loxilb</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Getting Started</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../k3s_quick_start_flannel/" class="dropdown-item">ext-cluster pod - K3s/loxilb with default flannel</a>
+</li>
+                                    
+<li>
+    <a href="../k3s_quick_start_calico/" class="dropdown-item">ext-cluster pod - K3s/loxilb with calico</a>
+</li>
+                                    
+<li>
+    <a href="../quick_start_with_cilium/" class="dropdown-item">ext-cluster pod - K3s/loxilb with cilium</a>
+</li>
+                                    
+<li>
+    <a href="../k0s_quick_start/" class="dropdown-item">ext-cluster pod - K0s/loxilb with kube-router</a>
+</li>
+                                    
+<li>
+    <a href="../k3s_quick_start_incluster/" class="dropdown-item">in-cluster pod - K3s/loxilb in-cluster mode</a>
+</li>
+                                    
+<li>
+    <a href="../k0s_quick_start_incluster/" class="dropdown-item">in-cluster pod - K0s/loxilb in-cluster mode</a>
+</li>
+                                    
+<li>
+    <a href="../microk8s_quick_start_incluster/" class="dropdown-item">in-cluster pod - MicroK8s/loxilb in-cluster mode</a>
+</li>
+                                    
+<li>
+    <a href="../service-proxy-flannel/" class="dropdown-item">service-proxy - K3s/loxilb service-proxy with flannel</a>
+</li>
+                                    
+<li>
+    <a href="../service-proxy-calico/" class="dropdown-item">service-proxy - K3s/loxilb service-proxy with calico</a>
+</li>
+                                    
+<li>
+    <a href="../standalone/" class="dropdown-item">loxilb in standalone mode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Advanced Guides</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../service-zones/" class="dropdown-item">How-To - service-group zones</a>
+</li>
+                                    
+<li>
+    <a href="../ext-ep/" class="dropdown-item">How-To - access end-points outside K8s</a>
+</li>
+                                    
+<li>
+    <a href="../k3s-multi-master/" class="dropdown-item">How-To - Deploy multi-server K3s HA with loxilb</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Knowledge Base</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../ebpf/" class="dropdown-item">What is eBPF</a>
+</li>
+                                    
+<li>
+    <a href="../lb/" class="dropdown-item">What is k8s service - load-balancer</a>
+</li>
+                                    
+<li>
+    <a href="../arch/" class="dropdown-item">Architecture in brief</a>
+</li>
+                                    
+<li>
+    <a href="../code/" class="dropdown-item">Code organization</a>
+</li>
+                                    
+<li>
+    <a href="../loxilbebpf/" class="dropdown-item">eBPF internals</a>
+</li>
+                                    
+<li>
+    <a href="../nat/" class="dropdown-item">NAT Modes of loxilb</a>
+</li>
+                                    
+<li>
+    <a href="../lb-algo/" class="dropdown-item">loxilb load-balancer algorithms</a>
+</li>
+                                    
+<li>
+    <a href="../run/" class="dropdown-item">Manual steps to build/run</a>
+</li>
+                                    
+<li>
+    <a href="../debugging/" class="dropdown-item">Debugging loxilb</a>
+</li>
+                                    
+<li>
+    <a href="../cmd-dev/" class="dropdown-item">Developer's guide to loxicmd</a>
+</li>
+                                    
+<li>
+    <a href="../api-dev/" class="dropdown-item">Developer's guide to loxilb API</a>
+</li>
+                                    
+<li>
+    <a href="../api/" class="dropdown-item">loxilb api-reference</a>
+</li>
+                                    
+<li>
+    <a href="../perf/" class="dropdown-item">Performance Report</a>
+</li>
+                                    
+<li>
+    <a href="../roadmap/" class="dropdown-item">Development Roadmap</a>
+</li>
+                                    
+<li>
+    <a href="../contribute/" class="dropdown-item">Contribution Guide</a>
+</li>
+                                    
+<li>
+    <a href="../requirements/" class="dropdown-item">System Requirements</a>
+</li>
+                                    
+<li>
+    <a href="../faq/" class="dropdown-item">Frequenctly Asked Questions- FAQs</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Blogs</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/loxilb-cluster-networking-elevating-k8s-networking-capabilities" class="dropdown-item">K8s - Elevating Cluster Networking</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/state-synchronization-of-ebpf-maps-using-go-a-tale-of-two-frameworks" class="dropdown-item">eBPF - Map Sync using Go</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-nuances-of-in-cluster-external-service-lb-with-loxilb" class="dropdown-item">K8s in-cluster service LB with LoxiLB</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-introducing-sctp-multihoming-functionality-with-loxilb" class="dropdown-item">K8s - Introducing SCTP Multihoming with LoxiLB</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/loxilb-anycast-service-load-balancing-with-high-availability" class="dropdown-item">Hyperscale anycast load balancing with HA</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/loxilb-load-balancer-setup-on-eks" class="dropdown-item">Getting started with loxilb on Amazon EKS</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-deploying-hitless-and-ha-load-balancing" class="dropdown-item">K8s - Deploying hitless Load-Balancing</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-exposing-ipv4-services-externally-as-ipv6" class="dropdown-item">Ipv6 migration in Kubernetes made easy</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/running-loxilb-on-aws-graviton2-based-ec2-instance" class="dropdown-item">Load-balancer Perf comparison on Amazon Graviton2</a>
+</li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Community Posts</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="https://futuredon.medium.com/5g-sctp-loadbalancer-using-loxilb-b525198a9103" class="dropdown-item">5G SCTP LoadBalancer Using loxilb</a>
+</li>
+            
+<li>
+    <a href="https://futuredon.medium.com/5g-uplink-classifier-using-loxilb-7593a4d66f4c" class="dropdown-item">5G Uplink Classifier Using loxilb</a>
+</li>
+            
+<li>
+    <a href="https://cloudybytes.medium.com/k3s-using-loxilb-as-external-service-lb-2ea4ce61e159" class="dropdown-item">K3s - Using loxilb as external service lb</a>
+</li>
+            
+<li>
+    <a href="https://medium.com/@ben0978327139/5g-sctp-loadbalancer-using-loxilb-applying-on-free5gc-b5c05bb723f0" class="dropdown-item">5G SCTP LoadBalancer Using LoxiLB Applying on free5GC</a>
+</li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a rel="prev" href="../kube-loxilb/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../k3s_quick_start_flannel/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#how-to-deploy-loxilb-with-high-availability" class="nav-link">How to deploy loxilb with High Availability</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#scenario-1-flat-l2-networking-active-backup" class="nav-link">Scenario 1 - Flat L2 Networking (active-backup)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#scenario-2-l3-network-active-backup-mode-using-bgp" class="nav-link">Scenario 2 - L3 network (active-backup mode using BGP)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#scenario-3-l3-network-active-active-with-bgp-ecmp" class="nav-link">Scenario 3 - L3 network (active-active with BGP ECMP)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#scenario-4-active-backup-with-connection-sync" class="nav-link">Scenario 4 - ACTIVE-BACKUP with Connection Sync</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#scenario-5-active-backup-with-fast-failover-detection" class="nav-link">Scenario 5 - ACTIVE-BACKUP with Fast Failover Detection</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#note" class="nav-link">Note :</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="how-to-deploy-loxilb-with-high-availability">How to deploy loxilb with High Availability</h1>
+<p>This article describes different scenarios about how to deploy loxilb with High Availability. Before continuing to this page, all readers are advised to have a basic understanding about <a href="https://loxilb-io.github.io/loxilbdocs/kube-loxilb/">kube-loxilb</a> and the different <a href="https://github.com/loxilb-io/loxilbdocs/blob/main/docs/nat.md">NAT modes</a> supported by loxilb. loxilb can run in-cluster or external to kubernetes cluster depending on architectural choices. For this documentation, we have assumed an incluster deployment wherever applicable but similar configuration should suffice for an external deployment as well.   </p>
+<ul>
+<li><a href="#scenario-1----flat-l2-networking-active-backup">Scenario 1 -  Flat L2 Networking (active-backup)</a></li>
+<li><a href="#scenario-2----l3-network-active-backup-mode-using-bgp">Scenario 2 -  L3 network (active-backup mode using BGP)</a></li>
+<li><a href="#scenario-3----l3-network-active-active-with-bgp-ecmp">Scenario 3 -  L3 network (active-active with BGP ECMP)</a></li>
+<li><a href="#scenario-4----active-backup-with-connection-sync">Scenario 4 - ACTIVE-BACKUP with Connection Sync</a></li>
+<li><a href="#scenario-5----active-backup-with-fast-failover-detection">Scenario 5 - ACTIVE-BACKUP with Fast Failover Detection(BFD)</a></li>
+</ul>
+<h2 id="scenario-1-flat-l2-networking-active-backup">Scenario 1 -  Flat L2 Networking (active-backup)</h2>
+<h3 id="setup">Setup</h3>
+<hr />
+<p>For this deployment scenario, kubernetes and loxilb are setup as follows:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-L2-1.drawio.svg" /></p>
+<p>Kubernetes uses a cluster with 2 Master Nodes and 2 Worker Nodes, all the nodes use the same 192.168.80.0/24 subnet. In this scenario, loxilb will be deployed as a DaemonSet in all the master nodes. And, kube-loxilb will be deployed as Deployment.    </p>
+<h3 id="ideal-for-use-when">Ideal for use when</h3>
+<ol>
+<li>Clients and services need to be in same-subnet.    </li>
+<li>End-points may or may not be in same subnet.      </li>
+<li>Simpler deployment is desired.   </li>
+</ol>
+<h3 id="roles-and-responsiblities-for-kube-loxilb">Roles and Responsiblities for kube-loxilb:</h3>
+<ul>
+<li>Choose CIDR from local subnet.   </li>
+<li>Choose SetRoles option so it can choose active loxilb pod.   </li>
+<li>Monitors loxilb's health and elect new master on failover.   </li>
+<li>Sets up loxilb in one-arm svc mode towards end-points.   </li>
+</ul>
+<h4 id="configuration-options">Configuration options</h4>
+<pre><code> containers:
+      - name: kube-loxilb
+        image: ghcr.io/loxilb-io/kube-loxilb:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/kube-loxilb
+        args:
+        ....
+        ....
+        - --externalCIDR=192.168.80.200/24
+        - --setRoles=0.0.0.0
+        - --setLBMode=1
+</code></pre>
+<ul>
+<li><b>"--externalCIDR=192.168.80.200/24" -</b> The external service IP for a svc is chosen from the externalCIDR range. In this scenario, the Client, svc and cluster are in the same subnet.</li>
+<li><b>"--setRoles=0.0.0.0" -</b> This option will enable kube-loxilb to choose active-backup amongst the loxilb instance and the svc IP to be configured on the active loxilb node.</li>
+<li><b>"--setLBMode=1" -</b> This option will enable kube-loxilb to configure svc in one-arm mode towards the endpoints.</li>
+</ul>
+<p>Sample kube-loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/in-cluster/kube-loxilb.yaml">here</a>.</p>
+<h3 id="roles-and-responsiblities-for-loxilb">Roles and Responsiblities for loxilb:</h3>
+<ul>
+<li>Tracks and directs the external traffic destined to svc to the endpoints.   </li>
+<li>Monitors endpoint's health and chooses active endpoints, if configured.   </li>
+</ul>
+<h4 id="configuration-options_1">Configuration options</h4>
+<pre><code> containers:
+      - name: loxilb-app
+        image: &quot;ghcr.io/loxilb-io/loxilb:latest&quot;
+        imagePullPolicy: Always
+        command: [ &quot;/root/loxilb-io/loxilb/loxilb&quot;, &quot;--egr-hooks&quot;, &quot;--blacklist=cni[0-9a-z]|veth.|flannel.&quot; ]
+        ports:
+        - containerPort: 11111
+        - containerPort: 179
+        - containerPort: 50051
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+</code></pre>
+<ul>
+<li>
+<p><b>"--egr-hooks" -</b> required for those cases in which workloads can be scheduled in the master nodes. No need to mention this argument when you are managing the workload scheduling to worker nodes.</p>
+</li>
+<li>
+<p><b>"--blacklist=cni[0-9a-z]|veth.|flannel." -</b> mandatory for running in in-cluster mode. As loxilb attaches it's ebpf programs on all the interfaces but since we running it in the default namespace then all the interfaces including CNI interfaces will be exposed and loxilb will attach it's ebpf program in those interfaces which is definitely not desired. So, user needs to mention a regex for  excluding all those interfaces. The regex in the given example will exclude the flannel interfaces. "--blacklist=cali.|tunl.|vxlan[.]calico|veth.|cni[0-9a-z]" regex must be used with calico CNI.</p>
+</li>
+</ul>
+<p>Sample loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/in-cluster/loxilb.yaml">here</a>.</p>
+<h3 id="failover">Failover</h3>
+<p>This diagram describes the failover scenario:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-L2-2.drawio.svg" /></p>
+<p>kube-loxilb actively monitors loxilb's health. In case of failure, it detects change in state of loxilb and assigns new “active” from available healthy loxilb pod pool.
+The new pod inherits svcIP assigned previously to other loxilb pod and Services are served by newly active loxilb pod.</p>
+<h2 id="scenario-2-l3-network-active-backup-mode-using-bgp">Scenario 2 -  L3 network (active-backup mode using BGP)</h2>
+<h3 id="setup_1">Setup</h3>
+<hr />
+<p>For this deployment scenario, kubernetes and loxilb are setup as follows:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-L3-1.drawio.svg" /></p>
+<p>Kubernetes uses a cluster with 2 Master Nodes and 2 Worker Nodes, all the nodes use the same 192.168.80.0/24 subnet. SVCs will have an external IP, not from the cluster/local subnet.
+In this scenario, loxilb will be deployed as a DaemonSet in all the master nodes. 
+And, kube-loxilb will be deployed as Deployment. </p>
+<h3 id="ideal-for-use-when_1">Ideal for use when</h3>
+<ol>
+<li>Clients and Cluster are in different subnets.</li>
+<li>Clients and svc VIP need to be in different subnet  (cluster end-points may also be in different networks).</li>
+<li>Ideal for cloud deployments.</li>
+</ol>
+<h3 id="roles-and-responsiblities-for-kube-loxilb_1">Roles and Responsiblities for kube-loxilb:</h3>
+<ul>
+<li>Choose CIDR from a different subnet.</li>
+<li>Choose SetRoles option so it can choose active loxilb pod.</li>
+<li>Monitors loxilb's health and elect new master on failover.</li>
+<li>Automates provisioning of bgp-peering between loxilb pods.</li>
+<li>Sets up loxilb in one-arm svc mode towards end-points.</li>
+</ul>
+<h4 id="configuration-options_2">Configuration options</h4>
+<pre><code> containers:
+      - name: kube-loxilb
+        image: ghcr.io/loxilb-io/kube-loxilb:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/kube-loxilb
+        args:
+        ....
+        ....
+        - --externalCIDR=123.123.123.1/24
+        - --setRoles=0.0.0.0
+        - --setLBMode=1
+        - --setBGP=65100
+        - --extBGPPeers=50.50.50.1:65101
+</code></pre>
+<ul>
+<li><b>"--externalCIDR=123.123.123.1/24" -</b> The external service IP for a svc is chosen from the externalCIDR range. In this scenario, the Client, svc and cluster are all in the different subnet.</li>
+<li><b>"--setRoles=0.0.0.0" -</b> This option will enable kube-loxilb to choose active-backup amongst the loxilb instances and the svc IP to be configured on the active loxilb node.</li>
+<li><b>"--setLBMode=1" -</b> This option will enable kube-loxilb to configure svc in one-arm mode towards the endpoints.</li>
+<li><b>"--setBGP=65100" -</b> This option will let kube-loxilb to configure local AS number in the bgp instance.</li>
+<li><b>"--extBGPPeers=50.50.50.1:65101" -</b> This option will configure the bgp instance's external neighbors.</li>
+</ul>
+<p>Sample kube-loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/in-cluster/kube-loxilb.yaml">here</a>.</p>
+<h3 id="roles-and-responsiblities-for-loxilb_1">Roles and Responsiblities for loxilb:</h3>
+<ul>
+<li>Advertises SVC IP as per the state(active or backup).</li>
+<li>Tracks and directs the external traffic destined to svc to the endpoints.</li>
+<li>Monitors endpoint's health and chooses active endpoints, if configured.</li>
+</ul>
+<h4 id="configuration-options_3">Configuration options</h4>
+<pre><code> containers:
+      - name: loxilb-app
+        image: &quot;ghcr.io/loxilb-io/loxilb:latest&quot;
+        imagePullPolicy: Always
+        command: [ &quot;/root/loxilb-io/loxilb/loxilb&quot;, &quot;--bgp&quot;, &quot;--egr-hooks&quot;, &quot;--blacklist=cni[0-9a-z]|veth.|flannel.&quot; ]
+        ports:
+        - containerPort: 11111
+        - containerPort: 179
+        - containerPort: 50051
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+</code></pre>
+<ul>
+<li>
+<p><b>"--bgp" -</b> option enables loxilb to run with goBGP instance which will advertise the routes with appropriate preference as per active/backup state.</p>
+</li>
+<li>
+<p><b>"--egr-hooks" -</b> required for those cases in which workloads can be scheduled in the master nodes. No need to mention this argument when you are managing the workload scheduling to worker nodes.</p>
+</li>
+<li>
+<p><b>"--blacklist=cni[0-9a-z]|veth.|flannel." -</b> mandatory for running in in-cluster mode. As loxilb attaches it's ebpf programs on all the interfaces but since we running it in the default namespace then all the interfaces including CNI interfaces will be exposed and loxilb will attach it's ebpf program in those interfaces which is definitely not desired. So, user needs to mention a regex for  excluding all those interfaces. The regex in the given example will exclude the flannel interfaces. "--blacklist=cali.|tunl.|vxlan[.]calico|veth.|cni[0-9a-z]" regex must be used with calico CNI.</p>
+</li>
+</ul>
+<p>Sample loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/in-cluster/loxilb.yaml">here</a>.</p>
+<h3 id="failover_1">Failover</h3>
+<p>This diagram describes the failover scenario:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-L3-2.drawio.svg" /></p>
+<p>kube-loxilb actively monitors loxilb's health. In case of failure, it detects change in state of loxilb and assigns new “active” from available healthy loxilb pod pool.
+The new pod inherits svcIP assigned previously to other loxilb pod and advertises the SVC IP with the preference as per the new state. Client receives the new route to SVCIP and the Services are served by newly active loxilb pod.</p>
+<h2 id="scenario-3-l3-network-active-active-with-bgp-ecmp">Scenario 3 -  L3 network (active-active with BGP ECMP)</h2>
+<h3 id="setup_2">Setup</h3>
+<hr />
+<p>For this deployment scenario, kubernetes and loxilb are setup as follows:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-L3-ECMP.drawio.svg" /></p>
+<p>Kubernetes uses a cluster with 2 Master Nodes and 2 Worker Nodes, all the nodes use the same 192.168.80.0/24 subnet. SVCs will have an external IP, not from the cluster/local subnet.
+In this scenario, loxilb will be deployed as a DaemonSet in all the master nodes. 
+And, kube-loxilb will be deployed as Deployment. </p>
+<h3 id="ideal-for-use-when_2">Ideal for use when</h3>
+<ol>
+<li>Clients and Cluster are in different subnets.</li>
+<li>Clients and svc VIP need to be in different subnet  (cluster end-points may also be in different networks).</li>
+<li>Ideal for cloud deployments.</li>
+<li>Better performance is desired due to active-active clustering but network devices/hosts must be capable of supporting ecmp.</li>
+</ol>
+<h3 id="roles-and-responsiblities-for-kube-loxilb_2">Roles and Responsiblities for kube-loxilb:</h3>
+<ul>
+<li>Choose CIDR from a different subnet.</li>
+<li><b>Do not choose SetRoles option</b> in this case (svcIPs will be advertised with same attributes/prio/med).</li>
+<li>Automates provisioning of bgp-peering between loxilb pods.</li>
+<li>Sets up loxilb in one-arm svc mode towards end-points.</li>
+</ul>
+<h4 id="configuration-options_4">Configuration options</h4>
+<pre><code> containers:
+      - name: kube-loxilb
+        image: ghcr.io/loxilb-io/kube-loxilb:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/kube-loxilb
+        args:
+        ....
+        ....
+        - --externalCIDR=123.123.123.1/24
+        - --setLBMode=1
+        - --setBGP=65100
+        - --extBGPPeers=50.50.50.1:65101
+</code></pre>
+<ul>
+<li><b>"--externalCIDR=123.123.123.1/24" -</b> The external service IP for a svc is chosen from the externalCIDR range. In this scenario, the Client, svc and cluster are all in the different subnet.</li>
+<li><b>"--setLBMode=1" -</b> This option will enable kube-loxilb to configure svc in one-arm mode towards the endpoints.</li>
+<li><b>"--setBGP=65100" -</b> This option will let kube-loxilb to configure local AS number in the bgp instance.</li>
+<li><b>"--extBGPPeers=50.50.50.1:65101" -</b> This option will configure the bgp instance's external neighbors</li>
+</ul>
+<p>Sample kube-loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/in-cluster/kube-loxilb.yaml">here</a>.</p>
+<h3 id="roles-and-responsiblities-for-loxilb_2">Roles and Responsiblities for loxilb:</h3>
+<ul>
+<li>Advertises SVC IP with same attributes.</li>
+<li>Tracks and directs the external traffic destined to svc to the endpoints.</li>
+<li>Monitors endpoint's health and chooses active endpoints, if configured.</li>
+</ul>
+<h4 id="configuration-options_5">Configuration options</h4>
+<pre><code> containers:
+      - name: loxilb-app
+        image: &quot;ghcr.io/loxilb-io/loxilb:latest&quot;
+        imagePullPolicy: Always
+        command: [ &quot;/root/loxilb-io/loxilb/loxilb&quot;, &quot;--bgp&quot;, &quot;--egr-hooks&quot;, &quot;--blacklist=cni[0-9a-z]|veth.|flannel.&quot; ]
+        ports:
+        - containerPort: 11111
+        - containerPort: 179
+        - containerPort: 50051
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+</code></pre>
+<ul>
+<li>
+<p><b>"--bgp" -</b> option enables loxilb to run with goBGP instance which will advertise the routes with same attributes.</p>
+</li>
+<li>
+<p><b>"--egr-hooks" -</b> required for those cases in which workloads can be scheduled in the master nodes. No need to mention this argument when you are managing the workload scheduling to worker nodes.</p>
+</li>
+<li>
+<p><b>"--blacklist=cni[0-9a-z]|veth.|flannel." -</b> mandatory for running in in-cluster mode. As loxilb attaches it's ebpf programs on all the interfaces but since we running it in the default namespace then all the interfaces including CNI interfaces will be exposed and loxilb will attach it's ebpf program in those interfaces which is definitely not desired. So, user needs to mention a regex for  excluding all those interfaces. The regex in the given example will exclude the flannel interfaces. "--blacklist=cali.|tunl.|vxlan[.]calico|veth.|cni[0-9a-z]" regex must be used with calico CNI.</p>
+</li>
+</ul>
+<p>Sample loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/in-cluster/loxilb.yaml">here</a>.</p>
+<h3 id="failover_2">Failover</h3>
+<p>This diagram describes the failover scenario:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-L3-ECMP-2.drawio.svg" /></p>
+<p>In case of failure, BGP running on the client will update the ECMP route and start sending the traffic to the active ECMP endpoints.</p>
+<h2 id="scenario-4-active-backup-with-connection-sync">Scenario 4 -  ACTIVE-BACKUP with Connection Sync</h2>
+<h3 id="setup_3">Setup</h3>
+<hr />
+<p>For this deployment scenario, kubernetes and loxilb are setup as follows:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-CT-Sync-1.drawio.svg" /></p>
+<p>This feature is only supported when loxilb runs externally outside the Kubernetes cluster in either default or fullnat mode. Kubernetes uses a cluster with 2 Master Nodes and 2 Worker Nodes, all the nodes use the same 192.168.80.0/24 subnet. SVCs will have an external IP. </p>
+<p>There are few possible scenarios which depends upon the connectivity of External Client, loxilb and the Kubernetes cluster. For this scenario, we are here considering L3 connectivity.</p>
+<h3 id="ideal-for-use-when_3">Ideal for use when</h3>
+<ol>
+<li>Need to preserve long running connections during lb pod failures</li>
+<li>Another LB mode known as DSR mode can be used to preserve connections but has the following limitations :<ol>
+<li>Can't ensure stateful filtering and connection-tracking.</li>
+<li>Can't support multihoming features since different 5-tuples might belong to the same connection. </li>
+</ol>
+</li>
+</ol>
+<h3 id="roles-and-responsiblities-for-kube-loxilb_3">Roles and Responsiblities for kube-loxilb:</h3>
+<ul>
+<li>Choose CIDR as required.</li>
+<li>Choose SetRoles option so it can choose active loxilb (svcIPs will be advertised with different attributes/prio/med).</li>
+<li>Automates provisioning of bgp-peering between loxilb containers (if required).</li>
+<li>Sets up loxilb in fullnat svc mode towards end-points.</li>
+</ul>
+<h4 id="configuration-options_6">Configuration options</h4>
+<pre><code> containers:
+      - name: kube-loxilb
+        image: ghcr.io/loxilb-io/kube-loxilb:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/kube-loxilb
+        args:
+        ....
+        ....
+        - --setRoles=0.0.0.0
+        - --loxiURL=http://192.168.80.1:11111,http://192.168.80.2:11111
+        - --externalCIDR=123.123.123.1/24
+        - --setLBMode=2
+        - --setBGP=65100
+        - --extBGPPeers=50.50.50.1:65101
+</code></pre>
+<ul>
+<li><b>"--setRoles=0.0.0.0" -</b> This option will enable kube-loxilb to choose active-backup amongst the loxilb instance.</li>
+<li><b>"--loxiURL=http://192.168.80.1:11111,http://192.168.80.2:11111" -</b> loxilb URLs to connect with.</li>
+<li><b>"--externalCIDR=123.123.123.1/24" -</b> The external service IP for a svc is chosen from the externalCIDR range. In this scenario, the Client, svc and cluster are all in the different subnet.</li>
+<li><b>"--setLBMode=2" -</b> This option will enable kube-loxilb to configure svc in fullnat mode towards the endpoints.</li>
+<li><b>"--setBGP=65100" -</b> This option will let kube-loxilb to configure local AS number in the bgp instance.</li>
+<li><b>"--extBGPPeers=50.50.50.1:65101" -</b> This option will configure the bgp instance's external neighbors</li>
+</ul>
+<p>Sample kube-loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/ext-cluster/kube-loxilb.yaml">here</a>.</p>
+<h3 id="roles-and-responsiblities-for-loxilb_3">Roles and Responsiblities for loxilb:</h3>
+<ul>
+<li>Advertises SVC IP as per the state(active/backup).</li>
+<li>Tracks and directs the external traffic destined to svc to the endpoints.</li>
+<li>Monitors endpoint's health and chooses active endpoints, if configured.</li>
+<li>Syncs the long-lived connections to all other configured loxilb peers.</li>
+</ul>
+<h4 id="running-options">Running options</h4>
+<pre><code>#llb1
+ docker run -u root --cap-add SYS_ADMIN   --restart unless-stopped --privileged -dit -v /dev/log:/dev/log --name loxilb ghcr.io/loxilb-io/loxilb:latest  --cluster=$llb2IP --self=0 -b
+
+#llb2
+ docker run -u root --cap-add SYS_ADMIN   --restart unless-stopped --privileged -dit -v /dev/log:/dev/log --name loxilb ghcr.io/loxilb-io/loxilb:latest --cluster=$llb1IP --self=1 -b
+</code></pre>
+<ul>
+<li><b>"--cluster=\&lt;llb-peer-IP&gt;" -</b> option configures the peer loxilb IP for syncing.</li>
+<li><b>"--self=0/1" -</b> option to identify the instance.</li>
+<li><b>"-b" -</b> option enables loxilb to run with goBGP instance which will advertise the routes with appropriate preference as per active/backup state.</li>
+</ul>
+<h3 id="failover_3">Failover</h3>
+<p>This diagram describes the failover scenario:</p>
+<p><img alt="setup" src="../photos/loxilb-k8s-arch-LoxiLB-HA-CT-Sync-2.drawio.svg" /></p>
+<p>In case of failure, kube-loxilb will detect the failure. It will select a new loxilb from the pool of active loxilbs and update it's state to new master. New master loxilb will advertise the svcIPs with higher proference which will force the BGP running on the client to send the traffic towards new Master loxilb. Since, the connections are all synced up, new master loxilb will start sending the traffic to the designated endpoints.</p>
+<p>Please read this detailed blog about <a href="https://www.loxilb.io/post/k8s-deploying-hitless-and-ha-load-balancing">"Hitless HA"</a> to know about this feature.</p>
+<h2 id="scenario-5-active-backup-with-fast-failover-detection">Scenario 5 -  ACTIVE-BACKUP with Fast Failover Detection</h2>
+<h3 id="setup_4">Setup</h3>
+<hr />
+<p>For this deployment scenario, kubernetes and loxilb are setup as follows:</p>
+<p><img alt="setup" src="../photos/bfd-1.svg" /></p>
+<p>This feature is only supported when loxilb runs externally outside the Kubernetes cluster. Kubernetes uses a cluster with 2 Master Nodes and 2 Worker Nodes, all the nodes use the same 192.168.80.0/24 subnet. SVCs will have an external IP. </p>
+<p>There are few possible scenarios which depends upon the connectivity of External Client, loxilb and the Kubernetes cluster. For this scenario, we are here considering L2 connectivity with connection sync.</p>
+<h3 id="ideal-for-use-when_4">Ideal for use when</h3>
+<ol>
+<li>Need fast failover detection and service continuity.</li>
+<li>This feature works in both L2 or L3 network settings. </li>
+</ol>
+<h3 id="roles-and-responsiblities-for-kube-loxilb_4">Roles and Responsiblities for kube-loxilb:</h3>
+<ul>
+<li>Choose CIDR as required.</li>
+<li>Disable SetRoles option so it should not choose active loxilb.</li>
+<li>Automates provisioning of bgp-peering between loxilb containers (if required).</li>
+<li>Sets up loxilb in configured svc mode towards end-points.</li>
+</ul>
+<h4 id="configuration-options_7">Configuration options</h4>
+<pre><code> containers:
+      - name: kube-loxilb
+        image: ghcr.io/loxilb-io/kube-loxilb:latest
+        imagePullPolicy: Always
+        command:
+        - /bin/kube-loxilb
+        args:
+        ....
+        ....
+        # Disable setRoles option
+        #- --setRoles=0.0.0.0
+        - --loxiURL=http://192.168.80.1:11111,http://192.168.80.2:11111
+        - --externalCIDR=192.168.80.5/32
+        - --setLBMode=2
+</code></pre>
+<ul>
+<li><b>"--setRoles=0.0.0.0" -</b> We have to make sure to disable this option as it will enable kube-loxilb to choose active-backup amongst the loxilb instance.</li>
+<li><b>"--loxiURL=http://192.168.80.1:11111,http://192.168.80.2:11111" -</b> loxilb URLs to connect with.</li>
+<li><b>"--externalCIDR=192.168.80.5/32" -</b> The external service IP for a svc is chosen from the externalCIDR range. In this scenario, the Client, svc and cluster are all in the same subnet.</li>
+<li><b>"--setLBMode=2" -</b> This option will enable kube-loxilb to configure svc in fullnat mode towards the endpoints.</li>
+</ul>
+<p>Sample kube-loxilb.yaml can be found <a href="https://github.com/loxilb-io/kube-loxilb/blob/main/manifest/ext-cluster/kube-loxilb.yaml">here</a>.</p>
+<h3 id="roles-and-responsiblities-for-loxilb_4">Roles and Responsiblities for loxilb:</h3>
+<ul>
+<li>Advertises SVC IP as per the state(active/backup).</li>
+<li>Tracks and directs the external traffic destined to svc to the endpoints.</li>
+<li>Monitors endpoint's health and chooses active endpoints, if configured.</li>
+<li>Syncs the long-lived connections to all other configured loxilb peers.</li>
+</ul>
+<h4 id="running-options_1">Running options</h4>
+<pre><code>#llb1
+ docker run -u root --cap-add SYS_ADMIN   --restart unless-stopped --privileged -dit -v /dev/log:/dev/log --name loxilb ghcr.io/loxilb-io/loxilb:latest  --cluster=192.168.80.2 --self=0 --ka=192.168.80.2:192.168.80.1
+
+#llb2
+ docker run -u root --cap-add SYS_ADMIN   --restart unless-stopped --privileged -dit -v /dev/log:/dev/log --name loxilb ghcr.io/loxilb-io/loxilb:latest --cluster=192.168.80.1 --self=1 --ka=192.168.80.1:192.168.80.2
+</code></pre>
+<ul>
+<li><b>"--ka=\&lt;llb-peer-IP&gt;:\&lt;llb-self-IP&gt;" -</b> option configures the peer loxilb IP and source IP for BFD.</li>
+<li><b>"--cluster=\&lt;llb-peer-IP&gt;" -</b> option configures the peer loxilb IP for syncing.</li>
+<li><b>"--self=0/1" -</b> option to identify the instance.</li>
+</ul>
+<h3 id="failover_4">Failover</h3>
+<p>This diagram describes the failover scenario:</p>
+<p><img alt="setup" src="../photos/bfd-2.svg" /></p>
+<p>In case of failure, BFD will detect the failure. BACKUP loxilb will update it's state to new master. New master loxilb will advertise the svcIPs through gARP or with higher proference, if running with BGP, which will force the client to send the traffic towards new Master loxilb. Since, the connections are all synced up, new master loxilb will start sending the traffic to the designated endpoints.</p>
+<p>Please read this detailed blog about <a href="https://www.loxilb.io/post/bringing-sub-second-resilience-in-kubernetes-cluster">"Fast Failover Detection with BFD"</a> to know about this feature.</p>
+<h2 id="note">Note :</h2>
+<p>There are ways to use loxilb in DSR mode, DNS etc which is still not covered in details in this doc. We will keep updating the scenarios.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,277 +1,705 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><link rel="canonical" href="https://loxilb-io.github.io/loxilbdocs/" />
-      <link rel="shortcut icon" href="img/favicon.ico" />
-    <title>LoxiLB Documentations</title>
-    <link rel="stylesheet" href="css/theme.css" />
-    <link rel="stylesheet" href="css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-    
-      <script>
-        // Current page data
-        var mkdocs_page_name = "Home";
-        var mkdocs_page_input_path = "index.md";
-        var mkdocs_page_url = "/loxilbdocs/";
-      </script>
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-21G7NBL2BN"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', "G-21G7NBL2BN");
-      </script>
-</head>
-
-<body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="." class="icon icon-home"> LoxiLB Documentations
-        </a>
-        <div class="version">
-          0.9.2 (Latest)
-        </div>
-      </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#loxilb-background">loxilb Background</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#loxilb-aimgoals">loxilb Aim/Goals</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#host-os-requirements">Host OS requirements</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#kernel-requirements">Kernel Requirements</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#compatible-kubernetes-versions">Compatible Kubernetes Versions</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#hardware-requirements">Hardware Requirements</a>
-    </li>
-    </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ebpf/">What is eBPF</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="lb/">What is service type - external load-balancer</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="arch/">Architecture in brief</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="code/">Code organization</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="loxilbebpf/">eBPF internals of loxilb</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="run/">Howto - build/run</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="ccm/">Howto - ccm plugin</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="debugging/">Howto - debug</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="integrate_bgp_eng/">Howto - loxib with calico bgp</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="cmd/">Cmd/Config guide</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="api/">Api usage/dev guide</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="perf/">Performance</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="roadmap/">Development Roadmap</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="contribute/">Contribute</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="faq/">FAQs</a>
-                </li>
-              </ul>
-      </div>
-    </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href=".">LoxiLB Documentations</a>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
         
-      </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Home</li>
-    <li class="wy-breadcrumbs-aside">
-    </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
-              
-                <h1 id="loxilbdocs-documentation-about-loxilb">loxilbdocs - Documentation about loxilb</h1>
-<p><a href="https://ebpf.io/projects#loxilb"><img alt="eBPF Emerging Project" src="https://img.shields.io/badge/ebpf.io-Emerging--Project-success" /></a> <a href="https://goreportcard.com/report/github.com/loxilb-io/loxilb"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/loxilb-io/loxilb" /></a> <img alt="build workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/docker-image.yml/badge.svg" /> <img alt="sanity workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/basic-sanity.yml/badge.svg" /> <img alt="apache" src="https://img.shields.io/badge/license-Apache-blue.svg" /> <img alt="gpl" src="https://img.shields.io/badge/license-GPL-blue.svg" />  </p>
-<p><a href="https://ebpf.io/projects#loxilb"><img alt="eBPF Emerging Project" src="photos/ebpflogo.png" /></a></p>
-<h2 id="loxilb-background">loxilb Background</h2>
-<p>loxilb started as a project to ease deployments of cloud-native/kubernetes workloads for the edge. When we deploy services in public clouds like AWS/GCP, the services becomes easily accessible or exported to the outside world. The public cloud providers, usually by default, associate load-balancer instances for incoming requests to these services to ensure everything is quite smooth. </p>
-<p>However, for on-prem and edge deployments, there is no <em>service type - external load balancer</em> provider by default. For a long time, <a href="https://metallb.universe.tf/">MetalLB</a> from Google was the only choice for the needy. But edge services are a different ball game altogether due to the fact that there are so many exotic protocols in play like GTP, SCTP, SRv6 etc and integrating everything into a seamlessly working solution has been quite difficult.</p>
-<p>loxilb dev team was approached by many people who wanted to solve this problem. As a first step to solve the problem, it became apparent that networking stack provided by Linux kernel, although very solid,  really lacked the development process agility to quickly provide support for a wide variety of permutations and combinations of protocols and stateful load-balancing on them. Our search led us to the awesome tech developed by the Linux community - eBPF. The flexibility to introduce new functionality into Kernel as a sandbox program was a complete fit to our design philosophy. Although we did consider DPDK for a while, but the fact that it needs dedicated cores/CPUs really defeats the whole purpose of making energy-efficient edge architectures.</p>
-<p>During the journey of loxilb's development, we developed many other generic networking/security/visibility features in it using eBPF which can be used for various other purposes not specific to load-balancer only. But we decided to stick our original name <em>loxilb</em> as load-balancing will continue to be its main purpose in the forseeable future. loxilb team hopes the open-source community finds it helpful.</p>
-<h2 id="loxilb-aimgoals">loxilb Aim/Goals</h2>
-<p>loxilb aims to provide the following :</p>
+        <link rel="canonical" href="https://loxilb-io.github.io/loxilbdocs/">
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>loxilb v0.9.4</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/fontawesome.min.css" rel="stylesheet">
+        <link href="css/brands.min.css" rel="stylesheet">
+        <link href="css/solid.min.css" rel="stylesheet">
+        <link href="css/v4-font-face.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="stylesheets/extra.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-21G7NBL2BN"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', "G-21G7NBL2BN");
+        </script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">loxilb v0.9.4</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="." class="nav-link active" aria-current="page">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Architectural Considerations</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="kube-loxilb/" class="dropdown-item">Understanding loxilb deployment in K8s with kube-loxilb</a>
+</li>
+                                    
+<li>
+    <a href="ha-deploy/" class="dropdown-item">Understanding High-availability with loxilb</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Getting Started</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="k3s_quick_start_flannel/" class="dropdown-item">ext-cluster pod - K3s/loxilb with default flannel</a>
+</li>
+                                    
+<li>
+    <a href="k3s_quick_start_calico/" class="dropdown-item">ext-cluster pod - K3s/loxilb with calico</a>
+</li>
+                                    
+<li>
+    <a href="quick_start_with_cilium/" class="dropdown-item">ext-cluster pod - K3s/loxilb with cilium</a>
+</li>
+                                    
+<li>
+    <a href="k0s_quick_start/" class="dropdown-item">ext-cluster pod - K0s/loxilb with kube-router</a>
+</li>
+                                    
+<li>
+    <a href="k3s_quick_start_incluster/" class="dropdown-item">in-cluster pod - K3s/loxilb in-cluster mode</a>
+</li>
+                                    
+<li>
+    <a href="k0s_quick_start_incluster/" class="dropdown-item">in-cluster pod - K0s/loxilb in-cluster mode</a>
+</li>
+                                    
+<li>
+    <a href="microk8s_quick_start_incluster/" class="dropdown-item">in-cluster pod - MicroK8s/loxilb in-cluster mode</a>
+</li>
+                                    
+<li>
+    <a href="service-proxy-flannel/" class="dropdown-item">service-proxy - K3s/loxilb service-proxy with flannel</a>
+</li>
+                                    
+<li>
+    <a href="service-proxy-calico/" class="dropdown-item">service-proxy - K3s/loxilb service-proxy with calico</a>
+</li>
+                                    
+<li>
+    <a href="standalone/" class="dropdown-item">loxilb in standalone mode</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Advanced Guides</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="service-zones/" class="dropdown-item">How-To - service-group zones</a>
+</li>
+                                    
+<li>
+    <a href="ext-ep/" class="dropdown-item">How-To - access end-points outside K8s</a>
+</li>
+                                    
+<li>
+    <a href="k3s-multi-master/" class="dropdown-item">How-To - Deploy multi-server K3s HA with loxilb</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Knowledge Base</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="ebpf/" class="dropdown-item">What is eBPF</a>
+</li>
+                                    
+<li>
+    <a href="lb/" class="dropdown-item">What is k8s service - load-balancer</a>
+</li>
+                                    
+<li>
+    <a href="arch/" class="dropdown-item">Architecture in brief</a>
+</li>
+                                    
+<li>
+    <a href="code/" class="dropdown-item">Code organization</a>
+</li>
+                                    
+<li>
+    <a href="loxilbebpf/" class="dropdown-item">eBPF internals</a>
+</li>
+                                    
+<li>
+    <a href="nat/" class="dropdown-item">NAT Modes of loxilb</a>
+</li>
+                                    
+<li>
+    <a href="lb-algo/" class="dropdown-item">loxilb load-balancer algorithms</a>
+</li>
+                                    
+<li>
+    <a href="run/" class="dropdown-item">Manual steps to build/run</a>
+</li>
+                                    
+<li>
+    <a href="debugging/" class="dropdown-item">Debugging loxilb</a>
+</li>
+                                    
+<li>
+    <a href="cmd-dev/" class="dropdown-item">Developer's guide to loxicmd</a>
+</li>
+                                    
+<li>
+    <a href="api-dev/" class="dropdown-item">Developer's guide to loxilb API</a>
+</li>
+                                    
+<li>
+    <a href="api/" class="dropdown-item">loxilb api-reference</a>
+</li>
+                                    
+<li>
+    <a href="perf/" class="dropdown-item">Performance Report</a>
+</li>
+                                    
+<li>
+    <a href="roadmap/" class="dropdown-item">Development Roadmap</a>
+</li>
+                                    
+<li>
+    <a href="contribute/" class="dropdown-item">Contribution Guide</a>
+</li>
+                                    
+<li>
+    <a href="requirements/" class="dropdown-item">System Requirements</a>
+</li>
+                                    
+<li>
+    <a href="faq/" class="dropdown-item">Frequenctly Asked Questions- FAQs</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Blogs</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/loxilb-cluster-networking-elevating-k8s-networking-capabilities" class="dropdown-item">K8s - Elevating Cluster Networking</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/state-synchronization-of-ebpf-maps-using-go-a-tale-of-two-frameworks" class="dropdown-item">eBPF - Map Sync using Go</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-nuances-of-in-cluster-external-service-lb-with-loxilb" class="dropdown-item">K8s in-cluster service LB with LoxiLB</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-introducing-sctp-multihoming-functionality-with-loxilb" class="dropdown-item">K8s - Introducing SCTP Multihoming with LoxiLB</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/loxilb-anycast-service-load-balancing-with-high-availability" class="dropdown-item">Hyperscale anycast load balancing with HA</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/loxilb-load-balancer-setup-on-eks" class="dropdown-item">Getting started with loxilb on Amazon EKS</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-deploying-hitless-and-ha-load-balancing" class="dropdown-item">K8s - Deploying hitless Load-Balancing</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/k8s-exposing-ipv4-services-externally-as-ipv6" class="dropdown-item">Ipv6 migration in Kubernetes made easy</a>
+</li>
+                                    
+<li>
+    <a href="https://www.loxilb.io/post/running-loxilb-on-aws-graviton2-based-ec2-instance" class="dropdown-item">Load-balancer Perf comparison on Amazon Graviton2</a>
+</li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#" class="dropdown-item">Community Posts</a>
+    <ul class="dropdown-menu">
+            
+<li>
+    <a href="https://futuredon.medium.com/5g-sctp-loadbalancer-using-loxilb-b525198a9103" class="dropdown-item">5G SCTP LoadBalancer Using loxilb</a>
+</li>
+            
+<li>
+    <a href="https://futuredon.medium.com/5g-uplink-classifier-using-loxilb-7593a4d66f4c" class="dropdown-item">5G Uplink Classifier Using loxilb</a>
+</li>
+            
+<li>
+    <a href="https://cloudybytes.medium.com/k3s-using-loxilb-as-external-service-lb-2ea4ce61e159" class="dropdown-item">K3s - Using loxilb as external service lb</a>
+</li>
+            
+<li>
+    <a href="https://medium.com/@ben0978327139/5g-sctp-loadbalancer-using-loxilb-applying-on-free5gc-b5c05bb723f0" class="dropdown-item">5G SCTP LoadBalancer Using LoxiLB Applying on free5GC</a>
+</li>
+    </ul>
+  </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="kube-loxilb/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#welcome-to-loxilb-documentation" class="nav-link">Welcome to loxilb documentation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#background" class="nav-link">Background</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#what-is-loxilb" class="nav-link">What is loxilb</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#kubernetes-with-loxilb" class="nav-link">Kubernetes with loxilb</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#why-choose-loxilb" class="nav-link">Why choose loxilb?</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#overall-features-of-loxilb" class="nav-link">Overall features of loxilb</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#components-of-loxilb" class="nav-link">Components of loxilb</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#layer4-vs-layer7" class="nav-link">Layer4 vs Layer7</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#telco-cloud-with-loxilb" class="nav-link">Telco-Cloud with loxilb</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#architectural-considerations" class="nav-link">Architectural Considerations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#getting-started-with-different-k8s-distributions-tools" class="nav-link">Getting started with different K8s distributions &amp; tools</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#advanced-guides" class="nav-link">Advanced Guides</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#knowledge-base" class="nav-link">Knowledge-Base</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#blogs" class="nav-link">Blogs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#community-posts" class="nav-link">Community Posts</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#latest-cicd-status" class="nav-link">Latest CICD Status</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><link rel="stylesheet" href="stylesheets/extra.css" /></p>
+<h2 id="welcome-to-loxilb-documentation"><a href="https://github.com/loxilb-io/loxilb"><img alt="loxilb logo" src="photos/loxilb-logo-small.png" /></a> Welcome to loxilb documentation</h2>
+<p><a href="https://ebpf.io/projects#loxilb"><img alt="eBPF Emerging App" src="https://img.shields.io/badge/ebpf.io-Emerging--App-success" /></a> <a href="https://goreportcard.com/report/github.com/loxilb-io/loxilb"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/loxilb-io/loxilb" /></a> <img alt="build workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/docker-image.yml/badge.svg" /> <img alt="sanity workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/basic-sanity.yml/badge.svg" />  <br />
+<img alt="apache" src="https://img.shields.io/badge/license-Apache-blue.svg" /> <img alt="gpl" src="https://img.shields.io/badge/license-BSD-blue.svg" />  <a href="https://github.com/loxilb-io/loxilb/stargazers"><img alt="Stargazers" src="https://img.shields.io/github/stars/loxilb-io??style=for-the-badge&amp;logo=appveyor" /></a>   </p>
+<!--[![eBPF Emerging Project](photos/ebpflogo.png)](https://ebpf.io/projects#loxilb)-->
+
+<h2 id="background">Background</h2>
+<p>loxilb started as a project to ease deployments of cloud-native/kubernetes workloads for the edge. When we deploy services in public clouds like AWS/GCP, the services becomes easily accessible or exported to the outside world. The public cloud providers, usually by default, associate load-balancer instances for incoming requests to these services to ensure everything is quite smooth.    </p>
+<p>However, for on-prem and edge deployments, there is no <em>service type - external load balancer</em> provider by default. For a long time, <strong>MetalLB</strong> originating from Google was the only choice for the needy. But edge services are a different ball game altogether due to the fact that there are so many exotic protocols in play like GTP, SCTP, SRv6 etc and integrating everything into a seamlessly working solution has been quite difficult.   </p>
+<p>loxilb dev team was approached by many people who wanted to solve this problem. As a first step to solve the problem, it became apparent that networking stack provided by Linux kernel, although very solid,  really lacked the development process agility to quickly provide support for a wide variety of permutations and combinations of protocols and stateful load-balancing on them. Our search led us to the awesome tech developed by the Linux community - eBPF. The flexibility to introduce new functionality into the OS Kernel as a safe sandbox program was a complete fit to our design philosophy. It also does not need any dedicated CPU cores which makes it perfect for designing energy-efficient edge architectures.    </p>
+<h2 id="what-is-loxilb">What is loxilb</h2>
+<p>loxilb is an open source cloud-native load-balancer based on GoLang/eBPF with the goal of achieving cross-compatibity across a wide range of on-prem, public-cloud or hybrid K8s environments.   </p>
+<h2 id="kubernetes-with-loxilb">Kubernetes with loxilb</h2>
+<p>Kubernetes defines many service constructs like cluster-ip, node-port, load-balancer etc for pod to pod, pod to service and service from outside communication.   </p>
+<p><img src="photos/K8sLoxiLB.jpg" width=50% height=50%></p>
+<p>All these services are provided by load-balancers/proxies operating at Layer4/Layer7. Due to Kubernetes's highly modular architecture,  these services can be provided by different software modules. For example, kube-proxy is used to provide cluster-ip and node-port services by default.   </p>
+<p>Service type load-balancer is usually provided by public cloud-provider as a managed service. But for on-prem and self-managed clusers, there are only a few good options. <b>loxilb provides service type load-balancer as its main use-case</b>.   </p>
+<p>Additionally, loxilb can also support cluster-ip and node-port services and thereby providing end-to-end connectivity for Kubernetes.  </p>
+<h2 id="why-choose-loxilb">Why choose loxilb?</h2>
 <ul>
-<li>Service type external load-balancer for kubernetes (hence the name loxilb)  </li>
-<li>L4/NAT44/NAT66/NAT64 stateful loadbalancer  <ul>
-<li><em>High-availability support</em>  </li>
-<li><em>K8s CCM compliance</em>  </li>
+<li><code>Performs</code> much better compared to its competitors across various architectures   <ul>
+<li><a href="https://loxilb-io.github.io/loxilbdocs/perf-single/">Single-Node Performance</a>  </li>
+<li><a href="https://loxilb-io.github.io/loxilbdocs/perf-multi/">Multi-Node Performance</a> </li>
+<li><a href="https://www.loxilb.io/post/running-loxilb-on-aws-graviton2-based-ec2-instance">Performance on ARM</a></li>
+<li><a href="https://www.youtube.com/watch?v=MJXcM0x6IeQ">Short Demo on Performance</a></li>
 </ul>
 </li>
-<li>Optimized SRv6 implementation in eBPF  </li>
-<li>L7 Proxy support  </li>
-<li>Make GTP tunnels first class citizens of the Linux world  <ul>
-<li><em>Support for QFI and other extension headers</em>    </li>
+<li>Utitlizes ebpf which makes it <code>flexible</code> as well as <code>customizable</code></li>
+<li>Advanced <code>quality of service</code> for workloads (per LB, per end-point or per client)</li>
+<li>Works with <code>any</code> Kubernetes distribution/CNI - k8s/k3s/k0s/kind/OpenShift + Calico/Flannel/Cilium/Weave/Multus etc</li>
+<li>Extensive support for <code>SCTP workloads</code> (with multi-homing) on k8s</li>
+<li>Dual stack with <code>NAT66, NAT64</code> support for k8s</li>
+<li>k8s <code>multi-cluster</code> support (planned 🚧)</li>
+<li>Runs in <code>any</code> cloud (public cloud/on-prem) or <code>standalone</code> environments</li>
+</ul>
+<h2 id="overall-features-of-loxilb">Overall features of loxilb</h2>
+<ul>
+<li>L4/NAT stateful loadbalancer<ul>
+<li>NAT44, NAT66, NAT64 with One-ARM, FullNAT, DSR etc</li>
+<li>Support for TCP, UDP, SCTP (w/ multi-homing), QUIC, FTP, TFTP etc</li>
 </ul>
 </li>
-<li>eBPF based kernel forwarding (Dual BSD/GPLv2 license)  <ul>
-<li><em>Complete kernel bypass with home-grown stack for advanced features like <a href="https://thermalcircle.de/doku.php?id=blog:linux:connection_tracking_1_modules_and_hooks">Conntrack</a>, QoS etc</em>  </li>
-<li><em>Highly scalable with low-latency &amp; high througput</em>    </li>
+<li>High-availability support with hitless/maglev/cgnat clustering</li>
+<li>Extensive and scalable end-point liveness probes for cloud-native environments</li>
+<li>Stateful firewalling and IPSEC/Wireguard support</li>
+<li>Optimized implementation for features like <a href="https://thermalcircle.de/doku.php?id=blog:linux:connection_tracking_1_modules_and_hooks">Conntrack</a>, QoS etc</li>
+<li>Full compatibility for ipvs (ipvs policies can be auto inherited)</li>
+<li>Policy oriented L7 proxy support - HTTP1.0, 1.1, 2.0 etc (planned 🚧)   </li>
 </ul>
-</li>
-<li>goLang based control plane components (Apache license)  </li>
-<li>Seamless integration with goBGP based routing stack  </li>
-<li>Easy to use APIs/Interfaces for developers</li>
-<li>Cloud-Native Network Function (CNF) form-factor by default  </li>
+<h2 id="components-of-loxilb">Components of loxilb</h2>
+<ul>
+<li>GoLang based control plane components</li>
+<li>A scalable/efficient <a href="https://ebpf.io/">eBPF</a> based data-path implementation</li>
+<li>Integrated goBGP based routing stack</li>
+<li>A kubernetes agent <a href="https://github.com/loxilb-io/kube-loxilb">kube-loxilb</a> written in Go</li>
 </ul>
-<h2 id="documentation">Documentation</h2>
+<h2 id="layer4-vs-layer7">Layer4 vs Layer7</h2>
+<p>loxilb works as a L4 load-balancer/service-mesh by default. Although it provides great performance, at times, L7 load-balancing/proxy might be necessary in K8s. There are many good L7 proxies already available for k8s. Still, we are working on providing a great L7 solution natively in eBPF. It is a tough endeavor one which should reap great benefits once completed. Please keep an eye for updates on this.</p>
+<h2 id="telco-cloud-with-loxilb">Telco-Cloud with loxilb</h2>
+<p>For deploying telco-cloud with cloud-native functions, loxilb can be used as a SCP(service communication proxy). SCP is nothing but a glorified term for Kubernetes load-balancing. But telco-cloud requires load-balancing across various interfaces/standards like N2, N4, E2(ORAN), S6x, 5GLAN, GTP etc. Each of these interfaces present its own unique challenges(and DPI) for load-balancing, which loxilb aims to solve e.g.:   </p>
+<ul>
+<li>N4 requires PFCP level session-intelligence</li>
+<li>N2 requires NGAP parsing capability   </li>
+<li>S6x requires Diameter/SCTP multi-homing LB support   </li>
+<li>MEC use-cases might require UL-CL understanding   </li>
+<li>Hitless failover support might be essential for mission-critical applications  </li>
+<li>E2 might require SCTP-LB with OpenVPN bundled together</li>
+</ul>
+<h2 id="architectural-considerations">Architectural Considerations</h2>
+<ul>
+<li><a href="kube-loxilb/">Understanding loxilb modes and deployment in K8s with kube-loxilb</a></li>
+<li><a href="ha-deploy/">Understanding High-availability with loxilb</a></li>
+</ul>
+<h2 id="getting-started-with-different-k8s-distributions-tools">Getting started with different K8s distributions &amp; tools</h2>
+<h4 id="loxilb-as-ext-cluster-pod">loxilb as ext-cluster pod</h4>
+<ul>
+<li><a href="k3s_quick_start_flannel/">K3s : loxilb with default flannel</a></li>
+<li><a href="k3s_quick_start_calico/">K3s : loxilb with calico</a></li>
+<li><a href="quick_start_with_cilium/">K3s : loxilb with cilium</a></li>
+<li><a href="k0s_quick_start/">K0s : loxilb with default kube-router networking</a></li>
+<li><a href="eks-external/">EKS : loxilb ext-mode</a>    </li>
+</ul>
+<h4 id="loxilb-as-in-cluster-pod">loxilb as in-cluster pod</h4>
+<ul>
+<li><a href="k3s_quick_start_incluster/">K3s : loxilb in-cluster mode</a></li>
+<li><a href="k0s_quick_start_incluster/">K0s : loxilb in-cluster mode</a></li>
+<li><a href="microk8s_quick_start_incluster/">MicroK8s : loxilb in-cluster mode</a></li>
+<li><a href="eks-external/">EKS : loxilb in-cluster mode</a>     </li>
+</ul>
+<h4 id="loxilb-as-service-proxy">loxilb as service-proxy</h4>
+<ul>
+<li><a href="service-proxy-flannel/">K3s : loxilb service-proxy with flannel</a></li>
+<li><a href="service-proxy-calico/">K3s : loxilb service-proxy with calico</a></li>
+</ul>
+<h4 id="loxilb-in-standalone-mode">loxilb in standalone mode</h4>
+<ul>
+<li><a href="standalone/">Run loxilb standalone</a></li>
+</ul>
+<h2 id="advanced-guides">Advanced Guides</h2>
+<ul>
+<li><a href="service-zones/">How-To : Service-group zones with loxilb</a></li>
+<li><a href="ext-ep/">How-To : Access end-points outside K8s</a></li>
+<li><a href="k3s-multi-master/">How-To : Deploy multi-server K3s HA with loxilb</a></li>
+<li><a href="aws-multi-az/">How-To : Deploy loxilb with multi-AZ HA support in AWS</a></li>
+</ul>
+<h2 id="knowledge-base">Knowledge-Base</h2>
 <ul>
 <li><a href="ebpf/">What is eBPF</a></li>
-<li><a href="lb/">What is service type - external load-balancer</a></li>
+<li><a href="lb/">What is k8s service - load-balancer</a></li>
 <li><a href="arch/">Architecture in brief</a></li>
 <li><a href="code/">Code organization</a></li>
 <li><a href="loxilbebpf/">eBPF internals of loxilb</a></li>
-<li><a href="run/">Howto - build/run</a></li>
-<li><a href="ccm/">Howto - ccm plugin</a></li>
-<li><a href="debugging/">Howto - debug</a></li>
-<li><a href="integrate_bgp_eng/">Howto - loxilb with calico bgp</a></li>
-<li><a href="cmd/">Cmd/Config guide</a></li>
-<li><a href="api/">Api usage/dev guide</a></li>
-<li><a href="perf/">Performance</a></li>
+<li><a href="nat/">What are loxilb NAT Modes</a></li>
+<li><a href="lb-algo/">loxilb load-balancer algorithms</a></li>
+<li><a href="run/">Manual steps to build/run</a></li>
+<li><a href="debugging/">Debugging loxilb</a></li>
+<li><a href="cmd/">loxicmd command-line tool usage</a></li>
+<li><a href="cmd-dev/">Developer's guide to loxicmd</a></li>
+<li><a href="api-dev/">Developer's guide to loxilb API</a></li>
+<li><a href="api/">API Reference - loxilb web-Api</a></li>
+<li><a href="perf/">Performance Reports</a></li>
 <li><a href="roadmap/">Development Roadmap</a></li>
 <li><a href="contribute/">Contribute</a></li>
-<li><a href="faq/">FAQs</a></li>
+<li><a href="requirements/">System Requirements</a></li>
+<li><a href="faq/">Frequenctly Asked Questions- FAQs</a></li>
 </ul>
-<h2 id="host-os-requirements">Host OS requirements</h2>
-<p>To install LoxiLB software packages, you need the 64-bit version of one of these OS versions:  </p>
+<h2 id="blogs">Blogs</h2>
 <ul>
-<li>Ubuntu 20.04(LTS)   </li>
-<li>Ubuntu 22.04(LTS)   </li>
-<li>Fedora 36   </li>
-<li>RockyOS  </li>
-<li>Enterprise Redhat (Planned)  </li>
-<li>Windows Server(Planned)  </li>
+<li><a href="https://www.loxilb.io/post/loxilb-cluster-networking-elevating-k8s-networking-capabilities">K8s - Elevating cluster networking</a>    </li>
+<li><a href="https://www.loxilb.io/post/state-synchronization-of-ebpf-maps-using-go-a-tale-of-two-frameworks">eBPF - Map sync using Go</a>    </li>
+<li><a href="https://www.loxilb.io/post/k8s-nuances-of-in-cluster-external-service-lb-with-loxilb">K8s in-cluster service LB with LoxiLB</a>   </li>
+<li><a href="https://www.loxilb.io/post/k8s-introducing-sctp-multihoming-functionality-with-loxilb">K8s - Introducing SCTP Multihoming with LoxiLB</a>   </li>
+<li><a href="https://www.loxilb.io/post/running-loxilb-on-aws-graviton2-based-ec2-instance">Load-balancer performance comparison on Amazon Graviton2</a>   </li>
+<li><a href="https://www.loxilb.io/post/loxilb-anycast-service-load-balancing-with-high-availability">Hyperscale anycast load balancing with HA</a>   </li>
+<li><a href="https://www.loxilb.io/post/loxilb-load-balancer-setup-on-eks">Getting started with loxilb on Amazon EKS</a>   </li>
+<li><a href="https://www.loxilb.io/post/k8s-deploying-hitless-and-ha-load-balancing">K8s - Deploying "hitless" Load-balancing</a>   </li>
+<li><a href="https://www.loxilb.io/post/oracle-cloud-bring-your-own-lb-for-self-managed-clusters">Oracle Cloud - Hitless HA load balancing</a></li>
+<li><a href="https://www.loxilb.io/post/k8s-exposing-ipv4-services-externally-as-ipv6">Ipv6 migration in Kubernetes made easy</a></li>
 </ul>
-<h2 id="kernel-requirements">Kernel Requirements</h2>
+<h2 id="community-posts">Community Posts</h2>
 <ul>
-<li>Linux Kernel Version &gt;= 5.1.0  </li>
-<li>Windows (TBD)  </li>
+<li><a href="https://futuredon.medium.com/5g-sctp-loadbalancer-using-loxilb-b525198a9103">5G SCTP LoadBalancer Using loxilb</a>   </li>
+<li><a href="https://futuredon.medium.com/5g-uplink-classifier-using-loxilb-7593a4d66f4c">5G Uplink Classifier Using loxilb</a>   </li>
+<li><a href="https://cloudybytes.medium.com/k3s-using-loxilb-as-external-service-lb-2ea4ce61e159">K3s - Using loxilb as external service lb</a>   </li>
+<li><a href="https://cloudybytes.medium.com/k8s-bringing-load-balancing-to-multus-workloads-with-loxilb-a0746f270abe">K8s - Bringing load-balancing to multus workloads with loxilb</a></li>
+<li><a href="https://medium.com/@ben0978327139/5g-sctp-loadbalancer-using-loxilb-applying-on-free5gc-b5c05bb723f0">5G SCTP LoadBalancer Using LoxiLB on free5GC</a></li>
+<li><a href="https://cloudybytes.medium.com/kubernetes-services-achieving-optimal-performance-is-elusive-5def5183c281">Kubernetes Services: Achieving optimal performance is elusive</a></li>
 </ul>
-<h2 id="compatible-kubernetes-versions">Compatible Kubernetes Versions</h2>
-<ul>
-<li>Kubernetes 1.19  </li>
-<li>Kubernetes 1.20  </li>
-<li>Kubernetes 1.21  </li>
-<li>Kubernetes 1.22  </li>
-</ul>
-<h2 id="hardware-requirements">Hardware Requirements</h2>
-<ul>
-<li>None as long as above criteria are met  </li>
-</ul>
-              
+<h2 id="latest-cicd-status">Latest CICD Status</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Features(Ubuntu20.04)</th>
+<th style="text-align: left;">Features(Ubuntu22.04)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><img alt="build workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/docker-image.yml/badge.svg" /></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/docker-multiarch.yml"><img alt="Docker-Multi-Arch" src="https://github.com/loxilb-io/loxilb/actions/workflows/docker-multiarch.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><img alt="simple workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/basic-sanity.yml/badge.svg" /></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/basic-sanity-ubuntu-22.yml"><img alt="Sanity-CI-Ubuntu-22" src="https://github.com/loxilb-io/loxilb/actions/workflows/basic-sanity-ubuntu-22.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/tcp-sanity.yml"><img alt="tcp-lb-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/tcp-sanity.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/tcp-sanity-ubuntu-22.yml"><img alt="tcp-lb-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/tcp-sanity-ubuntu-22.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/udp-sanity.yml"><img alt="udp-lb-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/udp-sanity.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/udp-sanity-ubuntu-22.yml"><img alt="udp-lb-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/udp-sanity-ubuntu-22.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/sctp-sanity.yml"><img alt="sctp-lb-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/sctp-sanity.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><img alt="ipsec-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/ipsec-sanity-ubuntu-22.yml/badge.svg" /></td>
+</tr>
+<tr>
+<td style="text-align: left;"><img alt="extlb workflow" src="https://github.com/loxilb-io/loxilb/actions/workflows/advanced-lb-sanity.yml/badge.svg" /></td>
+<td style="text-align: left;"><img alt="nat66-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/nat66-sanity-ubuntu-22.yml/badge.svg" /></td>
+</tr>
+<tr>
+<td style="text-align: left;"><img alt="ipsec-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/ipsec-sanity.yml/badge.svg" /></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/scale-sanity-ubuntu-22.yml"><img alt="Scale-Sanity-CI-Ubuntu-22" src="https://github.com/loxilb-io/loxilb/actions/workflows/scale-sanity-ubuntu-22.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><img alt="scale-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/scale-sanity.yml/badge.svg" /></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/perf.yml"><img alt="perf-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/perf.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/liveness-sanity.yml"><img alt="liveness-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/liveness-sanity.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><img alt="nat66-sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/nat66-sanity.yml/badge.svg" /></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/perf.yml"><img alt="perf-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/perf.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">K3s Tests</th>
+<th style="text-align: left;">K8s Cluster Tests</th>
+<th style="text-align: left;">EKS Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-base-sanity.yml"><img alt="K3s-Base-Sanity-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-base-sanity.yml/badge.svg?branch=main" /></a></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs.yml"><img alt="K8s-Calico-Cluster-IPVS-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><img alt="EKS" src="https://github.com/loxilb-io/loxilb/actions/workflows/eks.yaml/badge.svg?branch=main" /></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel.yml"><img alt="k3s-flannel-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs2.yml"><img alt="K8s-Calico-Cluster-IPVS2-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs2.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-ubuntu-22.yml"><img alt="k3s-flannel-ubuntu22-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-ubuntu-22.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs3.yml"><img alt="K8s-Calico-Cluster-IPVS3-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs3.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-cluster.yml"><img alt="k3s-flannel-cluster-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-cluster.yml/badge.svg" /></a></td>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs3-ha.yml"><img alt="K8s-Calico-Cluster-IPVS3-HA-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k8s-calico-ipvs3-ha.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-incluster.yml"><img alt="k3s-flannel-incluster-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-incluster.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-incluster-l2.yml"><img alt="k3s-flannel-incluster-l2-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-flannel-incluster-l2.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-calico.yml"><img alt="k3s-calico-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-calico.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-cilium-cluster.yml"><img alt="k3s-cilium-cluster-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-cilium-cluster.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-sctpmh.yml"><img alt="k3s-sctpmh-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-sctpmh.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-sctpmh-ubuntu22.yml"><img alt="k3s-sctpmh-ubuntu22-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-sctpmh-ubuntu-22.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-sctpmh-2.yml"><img alt="k3s-sctpmh-2-CI" src="https://github.com/loxilb-io/loxilb/actions/workflows/k3s-sctpmh-2.yml/badge.svg" /></a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table></div>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="ebpf/" class="btn btn-neutral float-right" title="What is eBPF">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
-          
         </div>
-      </div>
 
-    </section>
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js"></script>
 
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-    
-    
-      <span><a href="ebpf/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
 </div>
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = ".";</script>
-    <script src="js/theme_extra.js"></script>
-    <script src="js/theme.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
 
-</body>
+    </body>
 </html>
 
 <!--
 MkDocs version : 1.6.0
-Build Date UTC : 2024-04-24 05:10:42.597619+00:00
+Build Date UTC : 2024-07-03 07:40:39.875136+00:00
 -->
